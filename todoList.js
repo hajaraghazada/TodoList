@@ -109,8 +109,8 @@ function showAlert(type, message) {
 
     cardBody1.appendChild(div)
 
-    //asagidaki funksiya iki parametr alir -yerine yetireceyi metod ve vaxt.
-    //birinci parametri ile div'imizi yox eledi, ikinci parametrinde ise bunu ne zaman edeceyini mueyyen etdi.
+    // asagidaki funksiya iki parametr alir -yerine yetireceyi metod ve vaxt.
+    // birinci parametri ile div'imizi yox eledi, ikinci parametrinde ise bunu ne zaman edeceyini mueyyen etdi.
     setTimeout(function () {
         div.remove();
     }, 2500)
