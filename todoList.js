@@ -10,6 +10,7 @@ const todoList = document.querySelector(".list-group")
 const cardBody1 = document.querySelectorAll(".card-body")[0]
 const cardBody2 = document.querySelectorAll(".card-body")[1]
 const clearButton = document.querySelector("#todoClearButton")
+const filterInput = document.querySelector("#todoSearch")
 
 var todos = [];
 runEvents();
@@ -18,6 +19,45 @@ function runEvents() {
     form.addEventListener("submit", addTodo)
     document.addEventListener("DOMContentLoaded", pageLoaded)
     cardBody2.addEventListener("click", removeTodoFromUI)
+    clearButton.addEventListener("click", removeAllTodosFromEverywhere)
+    filterInput.addEventListener("keyup", filterTodos)
+}
+
+function filterTodos(e) {
+    const filterValue = e.target.value.toLowerCase().trim();
+    const myTodoList = document.querySelectorAll(".list-group-item")
+
+    if (myTodoList.length > 0) {
+        myTodoList.forEach(function (todo) {
+            if (todo.textContent.toLowerCase().trim().includes(filterValue)) {
+                todo.setAttribute("style", "display: block")
+            }
+            else {
+            todo.setAttribute("style","display: none !important")//bootstrapda bir class none olmasina icaze vermir !important yazdiqda bunu aradan qaldirmaq olar
+            }
+        }
+        )
+    }
+    else {
+        showAlert("warning", "You don't have any todo...")
+    }
+}
+
+function removeAllTodosFromEverywhere() {
+    const myTodoList = document.querySelectorAll(".list-group-item");
+    if (myTodoList.length > 0) {
+        //ekrandan silme
+        myTodoList.forEach(function (todo) {
+            todo.remove();
+        })
+        //storagedan silme
+        todos = [];
+        localStorage.setItem("todos", JSON.stringify(todos))
+        showAlert("success", "All todos removed successfully!")
+    }
+    else {
+        showAlert("warning", "You don't have any todo...")
+    }
 }
 
 function removeTodoFromUI(e) {
@@ -31,14 +71,14 @@ function removeTodoFromUI(e) {
     }
 }
 
-function removeTodoFromStorage(removedTodo){
+function removeTodoFromStorage(removedTodo) {
     checkTodosOnStorage();
-    todos.forEach(function(todo,index){
-if(removedTodo===todo){
-todos.splice(index,1);
-}
+    todos.forEach(function (todo, index) {
+        if (removedTodo === todo) {
+            todos.splice(index, 1);
+        }
     });
-localStorage.setItem("todos",JSON.stringify(todos));
+    localStorage.setItem("todos", JSON.stringify(todos));
 }
 
 function pageLoaded() {
@@ -109,8 +149,8 @@ function showAlert(type, message) {
 
     cardBody1.appendChild(div)
 
-    // asagidaki funksiya iki parametr alir -yerine yetireceyi metod ve vaxt.
-    // birinci parametri ile div'imizi yox eledi, ikinci parametrinde ise bunu ne zaman edeceyini mueyyen etdi.
+    //asagidaki funksiya iki parametr alir -yerine yetireceyi metod ve vaxt.
+    //birinci parametri ile div'imizi yox eledi, ikinci parametrinde ise bunu ne zaman edeceyini mueyyen etdi.
     setTimeout(function () {
         div.remove();
     }, 2500)
